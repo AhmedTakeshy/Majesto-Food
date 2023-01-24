@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Majesto-Food/static/css/main.754154db.css",
+    "main.js": "/Majesto-Food/static/js/main.218bdd74.js",
+    "static/media/meals.jpg": "/Majesto-Food/static/media/meals.2971f633fc1382581cbf.jpg",
+    "index.html": "/Majesto-Food/index.html",
+    "main.754154db.css.map": "/Majesto-Food/static/css/main.754154db.css.map",
+    "main.218bdd74.js.map": "/Majesto-Food/static/js/main.218bdd74.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.754154db.css",
+    "static/js/main.218bdd74.js"
+  ]
+}
