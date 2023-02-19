@@ -20,7 +20,7 @@ This is a ReactJS app, an online food ordering service. The website offers a wid
 
 ### Screenshot
 
-![](./ScreenShot.png)
+![](./src/assets/ScreenShot.png)
 
 
 ### Links
