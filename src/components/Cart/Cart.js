@@ -1,38 +1,38 @@
-import React, { useContext, useState } from "react";
-
-import CartContext from "../../store/CartContext";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { uiActions } from "../../store/ui-slice";
+import { cartActions } from "../../store/cart-slice";
 import Modal from "../UI/Modal/Modal";
 import styles from "./Cart.module.css";
 import CartItem from "./CartItem";
 import CartForm from "./CartForm";
 
 const Cart = (props) => {
+  const dispatch = useDispatch();
+
+  const toggleCartHandler = () => {
+    dispatch(uiActions.toggle());
+  };
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartAmount = useSelector((state) => state.cart.totalAmount);
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
+
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const cartCtx = useContext(CartContext);
 
-  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
-  const hasItems = cartCtx.items.length > 0;
-
-  const removeItemHandler = (id) => {
-    cartCtx.removeItem(id);
-  };
-
-  const addItemHandler = (item) => {
-    cartCtx.addItem({ ...item, amount: 1 });
-  };
+  const cartAmountFixed = cartAmount.toFixed(2);
+  const hasItems = cartQuantity > 0;
 
   const CartItems = (
     <ul className={styles["cart-items"]}>
-      {cartCtx.items.map((item) => (
+      {cartItems.map((item) => (
         <CartItem
           key={item.id}
-          name={item.name}
-          amount={item.amount}
+          id={item.id}
+          title={item.title}
+          quantity={item.quantity}
           price={item.price}
-          onRemove={removeItemHandler.bind(null, item.id)}
-          onAdd={addItemHandler.bind(null, item)}
         />
       ))}
     </ul>
@@ -47,7 +47,7 @@ const Cart = (props) => {
         method: "POST",
         body: JSON.stringify({
           user: userData,
-          orderItems: cartCtx.items,
+          orderItems: cartItems,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const Cart = (props) => {
 
     setIsSending(false);
     setIsSubmitted(true);
-    cartCtx.reset();
+    dispatch(cartActions.reset());
   };
 
   const CartFormHandler = () => {
@@ -72,13 +72,13 @@ const Cart = (props) => {
       {CartItems}
       <div className={styles.total}>
         <span>Total Amount</span>
-        <span>{totalAmount}</span>
+        <span>{cartAmountFixed}</span>
       </div>
       {isCheckout ? (
-        <CartForm onConfirm={SubmitUserData} onCancel={props.onHideCart} />
+        <CartForm onConfirm={SubmitUserData} onCancel={toggleCartHandler} />
       ) : (
         <div className={styles.actions}>
-          <button className={styles["button--alt"]} onClick={props.onHideCart}>
+          <button className={styles["button--alt"]} onClick={toggleCartHandler}>
             Close
           </button>
           {hasItems && (
@@ -96,7 +96,7 @@ const Cart = (props) => {
     <>
       <p>Successfully sent the order!</p>
       <div className={styles.actions}>
-        <button className={styles.button} onClick={props.onHideCart}>
+        <button className={styles.button} onClick={toggleCartHandler}>
           Close
         </button>
       </div>
@@ -104,7 +104,7 @@ const Cart = (props) => {
   );
 
   return (
-    <Modal onClick={props.onHideCart}>
+    <Modal>
       {!isSending && !isSubmitted && cartModalContent}
       {isSending && sendingMessage}
       {isSubmitted && !isSending && submittedMessage}

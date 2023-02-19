@@ -1,18 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import CartContext from "../../store/CartContext";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Styles from "./CartButton.module.css";
 
 const CartButton = (props) => {
-  const cartCtx = useContext(CartContext);
   const [btnIsBumped, setBtnIsBumped] = useState(false);
-  const { items } = cartCtx;
-  const numberOfCartItems = items.reduce((currNum, item) => {
-    return currNum + item.amount;
-  }, 0);
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
 
   const btnStyles = `${Styles.button} ${btnIsBumped ? Styles.bump : ""}`;
   useEffect(() => {
-    if (items.length === 0) {
+    if (cartQuantity.length === 0) {
       return;
     }
     setBtnIsBumped(true);
@@ -22,7 +18,7 @@ const CartButton = (props) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [items]);
+  }, [cartQuantity]);
 
   return (
     <button className={btnStyles} onClick={props.onClick}>
@@ -37,7 +33,7 @@ const CartButton = (props) => {
         </svg>
       </span>
       <span>Your Cart</span>
-      <span className={Styles.badge}>{numberOfCartItems}</span>
+      <span className={Styles.badge}>{cartQuantity}</span>
     </button>
   );
 };

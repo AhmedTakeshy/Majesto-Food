@@ -1,28 +1,41 @@
-import React, { useState } from "react";
-
-import CartProvider from "./store/CartProvider";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCartData, sendCartData } from "./store/cart-actions";
 import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
 import Cart from "./components/Cart/Cart";
 
+let loadedTimes = 1;
+
 function App() {
-  const [cartStatus, setCartStatus] = useState(false);
+  const cartIsVisible = useSelector((state) => state.ui.cartIsVisible);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
-  const ShowCartHandler = () => {
-    setCartStatus(true);
-  };
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
-  const HideCartHandler = () => {
-    setCartStatus(false);
-  };
+  useEffect(() => {
+    if (loadedTimes <= 2) {
+      loadedTimes++;
+      return;
+    }
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
+  }, [cart, dispatch]);
+
+  useEffect(() => {});
+
   return (
-    <CartProvider>
-      {cartStatus && <Cart onHideCart={HideCartHandler} />}
-      <Header onShowCart={ShowCartHandler} />
+    <>
+      {cartIsVisible && <Cart />}
+      <Header />
       <main>
         <Meals />
       </main>
-    </CartProvider>
+    </>
   );
 }
 

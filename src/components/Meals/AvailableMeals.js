@@ -26,7 +26,7 @@ const AvailableMeals = () => {
       for (let key in resData) {
         loadedData.push({
           id: key,
-          name: resData[key].name,
+          title: resData[key].name,
           description: resData[key].description,
           price: resData[key].price,
         });
@@ -56,7 +56,7 @@ const AvailableMeals = () => {
       <MealItem
         id={meal.id}
         key={meal.id}
-        name={meal.name}
+        title={meal.title}
         description={meal.description}
         price={meal.price}
       />
