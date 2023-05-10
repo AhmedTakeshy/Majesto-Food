@@ -16,7 +16,7 @@
 
 ### Description
 
-This is a ReactJS app, an online food ordering service. The website offers a wide range of food options from various cuisines and allows customers to add their meals to the cart and modify them and ability to order their food online. The app has some simple validation to demonstrate more complex logic but is easy to use, making it a convenient and secure way to enjoy delicious food. Built with
+This is a ReactJS app, an online food ordering service. The website offers a wide range of food options from various cuisines and allows customers to add their meals to the cart and modify them and ability to order their food online. The app has some simple validation to demonstrate more complex logic but is easy to use, making it a convenient and secure way to enjoy delicious food. Built with react-redux, redux-toolkit, and firebase as a database to save the changes and the orders.
 
 ### Screenshot
 
