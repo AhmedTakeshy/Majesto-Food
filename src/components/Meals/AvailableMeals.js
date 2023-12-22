@@ -22,7 +22,7 @@ const AvailableMeals = () => {
       const resData = await res.json();
 
       const loadedData = [];
-
+      console.log(resData)
       for (let key in resData) {
         loadedData.push({
           id: key,
